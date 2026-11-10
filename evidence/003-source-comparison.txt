@@ -1,0 +1,16 @@
+From Bot Kit snapshot (2026-11-10):
+strategies/perp-starter/README.md:19-21:
+- A bracket costs SOMI, not just collateral. Each pending stop locks 0.15 SOMI on the live markets, so a pair holds 0.30 until cancelled or fired.
+
+strategies/perp-starter/src/index.ts:99-100:
+- each pending stop locks ${Number(somi) / 1e18} SOMI, refunded on cancel; a bracket needs two.
+
+strategies/perp-starter/src/index.ts:162-163:
+- Arming a second one would lock another 0.30 SOMI...
+
+Official dreamDEX Perps Testnet Orders documentation checked 2026-11-10:
+https://app.testnet.dreamdex.io/docs/trading/perps-testnet/orders
+Heading: "TP and SL hold a little STT"
+- Each pending TP or SL holds 0.15 STT from your wallet.
+
+Scope: documentation/log labeling difference, not proof of token transfer failure.
