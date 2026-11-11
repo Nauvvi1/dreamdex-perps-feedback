@@ -1,31 +1,45 @@
 # dreamDEX Perps — Feedback Track
 
-I reviewed the public `perp-starter` example in the dreamDEX Bot Kit. The reports below describe two source-level issues I reproduced locally and one testnet documentation mismatch. No live orders were placed.
+I reviewed the official dreamDEX Perps Bot Kit and documented issues in its trading examples and testnet documentation. These are reproducible source-level findings, not claims of observed on-chain losses.
 
-| Report | Area | Proposed severity | Evidence |
-|---|---|---|---|
-| [001 — SHORT TP/SL percentages](feedback/001-short-tp-sl.md) | app | major | Executable reproduction + output |
-| [002 — Invalid side becomes LONG](feedback/002-invalid-perp-side.md) | app | normal | Executable reproduction + output |
-| [003 — Stop-order token label](feedback/003-stop-token-name.md) | docs | normal | Original text compared with testnet docs |
+| # | Finding | Area | Proposed severity | Verification |
+|---|---|---|---|---|
+| [001](feedback/001-short-tp-sl.md) | SHORT TP/SL percentages are switched | app | major | Offline calculation reproduction |
+| [002](feedback/002-invalid-perp-side.md) | Invalid side silently defaults to LONG | app | normal | Offline configuration reproduction |
+| [003](feedback/003-stop-token-name.md) | Stop-order token name in documentation | docs | normal | Source/documentation comparison |
+| [004](feedback/004-existing-stops-cancelled.md) | Starter cancels stops it did not create | app | major | Original strategy code + controlled dependency mocks |
+| [005](feedback/005-stale-quantity-in-close.md) | Close uses an earlier quantity after a newer position read | app | major | Original helper code + control case |
+| [006](feedback/006-flatten-removes-stops-before-close.md) | Flatten cancels stops before checking close result | app | major | Original strategy code + simulated failed close |
 
-## Reproduce
+## Run the reproductions
 
-Requires Node.js 18 or later, no package installation, wallet or testnet funds.
+Node.js 20+ is required. No wallet, RPC endpoint, or testnet funds are needed.
+
+The original three reports can be reproduced with no installation:
 
 ```bash
 node tests/reproduce.mjs
 ```
 
-Expected output is saved in [`evidence/offline-test-output.txt`](evidence/offline-test-output.txt). The full original `perp-starter` strategy file and README used for these checks are pinned in `fixtures/` solely to make the reproductions stable. They retain the upstream MIT license notice.
+The additional reports execute original TypeScript source snapshots (loaded into a VM with mocked SDK/network dependencies):
 
-## Source version
+```bash
+npm install --ignore-scripts --no-audit --no-fund
+npm run test:additions
+```
 
-- Source: [somnia-chain/dreamdex-bot-kit](https://github.com/somnia-chain/dreamdex-bot-kit)
-- ZIP snapshot inspected: 2026-11-10; archive has no Git metadata, so no commit hash is claimed.
-- `strategies/perp-starter/src/index.ts` SHA-256: `3e0158ab088489fbd63ff4a0e1a38174d6c5be6a3fee1fd85c4ea19065f731b1`
-- `strategies/perp-starter/README.md` SHA-256: `942be08a8d25e729fd117d224d267b2a0debf22a4d5b1637478a4b9fd3ab5cf3`
-- Intended network: Somnia Tokyo / Hideki testnet, chain ID 50383. All executable checks are **offline**.
+To run both sets: `npm test`.
 
-These are reports about the official Bot Kit example, not confirmed problems in the Markets SDK or deployed contracts. Severity, duplicate status, scope and payment are subject to the organizers' review.
+Saved output: [`evidence/offline-test-output.txt`](evidence/offline-test-output.txt) and [`evidence/004-006-local-run.txt`](evidence/004-006-local-run.txt).
 
-Potential security vulnerabilities should be reported privately to `security@dreamdex.io`, not published here.
+## Reproducibility and limits
+
+- Source: [somnia-chain/dreamdex-bot-kit](https://github.com/somnia-chain/dreamdex-bot-kit).
+- Both source files are copied unmodified into `fixtures/` under the upstream MIT license.
+- The Bot Kit ZIP was downloaded on November 10, 2026 and contains no Git history, so no upstream commit ID is claimed.
+- `perp-starter` source SHA-256: `3e0158ab088489fbd63ff4a0e1a38174d6c5be6a3fee1fd85c4ea19065f731b1`.
+- `perp-core/orders.ts` source SHA-256: `a9ed57032c74315deafaea99a9ce349875b5bcd4b6eb0d09e2c5065c9402c583`.
+- Tests are offline, against the original function bodies and mocked external dependencies. They do **not** prove a real fill, unintended position reversal, user loss, or accepted bounty classification.
+- Intended network: Somnia Tokyo / Hideki testnet, chain ID 50383.
+
+These reports concern the Bot Kit rather than proven defects in deployed contracts or the Markets SDK. The organizer decides whether they are in scope, unique, and eligible for a payout. Security vulnerabilities should be reported privately, not published here.

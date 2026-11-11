@@ -1,0 +1,14 @@
+{
+  "name": "dreamdex-perps-feedback",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:original": "node tests/reproduce.mjs",
+    "test:additions": "node --experimental-vm-modules tests/reproduce-additions.cjs",
+    "test": "npm run test:original && npm run test:additions"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
+}

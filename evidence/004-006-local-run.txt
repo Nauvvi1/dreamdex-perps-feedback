@@ -1,0 +1,11 @@
+
+> dreamdex-perps-feedback@1.0.0 test:additions
+> node --experimental-vm-modules tests/reproduce-additions.cjs
+
+(node:1045) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+QA-004 PASS | no stops created by bot | cancelStops called with existing IDs 77,88
+QA-005 PASS | preview 10 -> latest position 2 -> SELL 10e18 (normal MARKET order, no reduceOnly field)
+QA-005 CONTROL PASS | preview 2 -> latest position 2 -> SELL 2e18
+QA-006 PASS | armBracket -> cancelStops(501,502) -> closePosition(sent:false)
+All 3 independent source-path reproductions passed. Offline only; no live orders.
