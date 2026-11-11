@@ -1,0 +1,16 @@
+New issue #007 — add these files under the SAME paths in your existing GitHub repository:
+  feedback/007-maker-orders-left-after-refresh-failure.md
+  tests/repro-007.cjs
+  evidence/007-maker-refresh-failure.json
+  evidence/007-runtime-warnings.txt
+  fixtures/perp-maker-index.ts
+
+Do NOT replace existing 001-006 reports or the existing package.json.
+
+Add this one line to the existing README feedback table:
+  007 | perp-maker can exit without cancelling live quotes when a market refresh fails | major (proposed) | offline reproduction
+
+To run on Node.js 22+:
+  node --experimental-vm-modules tests/repro-007.cjs
+
+The report is a reproducible client-code fault. It does not claim any on-chain fill occurred. Check duplication and organizer scope before submitting.

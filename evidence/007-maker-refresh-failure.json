@@ -1,0 +1,53 @@
+{
+  "source": "fixtures/perp-maker-index.ts",
+  "tests": "2 passed",
+  "result": [
+    {
+      "scenario": "Transient market reload failure after resting bid/ask",
+      "exitCode": 1,
+      "placed": [
+        "place long id=101",
+        "place short id=102"
+      ],
+      "cancellations": [],
+      "events": [
+        "requireMarket 1",
+        "log perp-maker on BTC-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "log preflight ok",
+        "requireMarket 2",
+        "place long id=101",
+        "place short id=102",
+        "sleep 1",
+        "requireMarket 3",
+        "error Error: Indexer RPC timeout",
+        "exit 1"
+      ]
+    },
+    {
+      "scenario": "Graceful stop after resting bid/ask",
+      "exitCode": 0,
+      "placed": [
+        "place long id=101",
+        "place short id=102"
+      ],
+      "cancellations": [
+        "cancel id=101",
+        "cancel id=102"
+      ],
+      "events": [
+        "requireMarket 1",
+        "log perp-maker on BTC-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "log preflight ok",
+        "requireMarket 2",
+        "place long id=101",
+        "place short id=102",
+        "sleep 1",
+        "cancel id=101",
+        "cancel id=102",
+        "log quotes pulled, exiting",
+        "shutdown",
+        "exit 0"
+      ]
+    }
+  ]
+}
