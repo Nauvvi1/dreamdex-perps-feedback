@@ -6,7 +6,8 @@
   "scripts": {
     "test:original": "node tests/reproduce.mjs",
     "test:additions": "node --experimental-vm-modules tests/reproduce-additions.cjs",
-    "test": "npm run test:original && npm run test:additions"
+    "test": "npm run test:original && npm run test:additions && npm run test:007",
+    "test:007": "node --experimental-vm-modules tests/repro-007.cjs"
   },
   "devDependencies": {
     "typescript": "5.6.3"

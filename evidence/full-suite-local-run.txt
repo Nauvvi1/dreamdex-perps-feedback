@@ -1,6 +1,6 @@
 
 > dreamdex-perps-feedback@1.0.0 test
-> npm run test:original && npm run test:additions
+> npm run test:original && npm run test:additions && npm run test:007
 
 
 > dreamdex-perps-feedback@1.0.0 test:original
@@ -17,10 +17,70 @@ Offline tests complete. No transactions were made.
 > dreamdex-perps-feedback@1.0.0 test:additions
 > node --experimental-vm-modules tests/reproduce-additions.cjs
 
-(node:1147) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(node:2955) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
 (Use `node --trace-warnings ...` to show where the warning was created)
 QA-004 PASS | no stops created by bot | cancelStops called with existing IDs 77,88
 QA-005 PASS | preview 10 -> latest position 2 -> SELL 10e18 (normal MARKET order, no reduceOnly field)
 QA-005 CONTROL PASS | preview 2 -> latest position 2 -> SELL 2e18
 QA-006 PASS | armBracket -> cancelStops(501,502) -> closePosition(sent:false)
 All 3 independent source-path reproductions passed. Offline only; no live orders.
+
+> dreamdex-perps-feedback@1.0.0 test:007
+> node --experimental-vm-modules tests/repro-007.cjs
+
+(node:2974) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2974) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+{
+  "source": "/mnt/data/repo_audit/dreamdex-perps-feedback-main/fixtures/perp-maker-index.ts",
+  "tests": "2 passed",
+  "result": [
+    {
+      "scenario": "Transient market reload failure after resting bid/ask",
+      "exitCode": 1,
+      "placed": [
+        "place long id=101",
+        "place short id=102"
+      ],
+      "cancellations": [],
+      "events": [
+        "requireMarket 1",
+        "log perp-maker on BTC-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "log preflight ok",
+        "requireMarket 2",
+        "place long id=101",
+        "place short id=102",
+        "sleep 1",
+        "requireMarket 3",
+        "error Error: Indexer RPC timeout",
+        "exit 1"
+      ]
+    },
+    {
+      "scenario": "Graceful stop after resting bid/ask",
+      "exitCode": 0,
+      "placed": [
+        "place long id=101",
+        "place short id=102"
+      ],
+      "cancellations": [
+        "cancel id=101",
+        "cancel id=102"
+      ],
+      "events": [
+        "requireMarket 1",
+        "log perp-maker on BTC-PERP | 25 USDso per side at 2x | half-spread 15bps skew 10bps | cap 100 USDso | dry-run false",
+        "log preflight ok",
+        "requireMarket 2",
+        "place long id=101",
+        "place short id=102",
+        "sleep 1",
+        "cancel id=101",
+        "cancel id=102",
+        "log quotes pulled, exiting",
+        "shutdown",
+        "exit 0"
+      ]
+    }
+  ]
+}
