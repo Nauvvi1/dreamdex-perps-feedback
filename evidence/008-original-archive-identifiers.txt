@@ -1,0 +1,9 @@
+Original supplied packages inspected:
+
+dreamdex-bot-kit-main(7).zip
+SHA256 fdea408a21ed52f16d0059eda89b8eedcadf0240f57c57004416ab185c698e5d
+
+markets-sdk-0.32.1(2).tgz
+SHA256 4849fea1ca7b493693de40efdaed20ef0364f4c393ab5f162cd3e9b633a49e88
+
+Extracted files included in this QA-008 package have byte-for-byte identical content to the corresponding files inside these archives. See 008-upstream-source-sha256.txt.

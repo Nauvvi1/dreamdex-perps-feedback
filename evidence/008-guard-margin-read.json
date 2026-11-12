@@ -1,0 +1,126 @@
+{
+  "report": "008-guard-unhandled-margin-read",
+  "outcome": "PASS",
+  "verifiedAgainstUnmodifiedUpstreamSource": true,
+  "target": "dreamDEX Bot Kit perp-guard; Markets SDK 0.32.1",
+  "scope": "local deterministic test with mock RPC, no network or transactions",
+  "node": "v22.16.0",
+  "typescript": "5.8.3",
+  "sourceSHA256": {
+    "guard": "5a7712eb30e5baaa8a4657301d121055ecff804e967c7f189637df309ef5e21a",
+    "core": "041cfbb5a34bc80c6ddb2d71d81b592c979826a950d617aebdbb2533ea58d23a",
+    "sdk": "46c7289705c534a2da8b969a82211d6792026b0b2a2d08cd8bf52a5d560273b2"
+  },
+  "controls": {
+    "control": {
+      "mode": "all-reads-success",
+      "actualProcessExitStatus": 0,
+      "processSignal": null,
+      "trace": {
+        "mode": "all-reads-success",
+        "events": [
+          {
+            "type": "readContract",
+            "name": "getAccountState"
+          },
+          {
+            "type": "readContract",
+            "name": "getWithdrawableCollateral"
+          },
+          {
+            "type": "readContract",
+            "name": "getAccountHealth"
+          },
+          {
+            "type": "readContract",
+            "name": "getMarginStatus"
+          },
+          {
+            "type": "positionIn",
+            "market": "BTC-PERP"
+          },
+          {
+            "type": "closePosition",
+            "market": "BTC-PERP"
+          },
+          {
+            "type": "readContract",
+            "name": "getAccountState"
+          },
+          {
+            "type": "readContract",
+            "name": "getWithdrawableCollateral"
+          },
+          {
+            "type": "readContract",
+            "name": "getAccountHealth"
+          },
+          {
+            "type": "readContract",
+            "name": "getMarginStatus"
+          },
+          {
+            "type": "positionIn",
+            "market": "ETH-PERP"
+          },
+          {
+            "type": "closePosition",
+            "market": "ETH-PERP"
+          },
+          {
+            "type": "shutdown"
+          }
+        ],
+        "logs": [
+          "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+          "BTC-PERP: long 1 (100.00 USDso) | health 1.100x maintenance | status Healthy",
+          "health 1.100 is below the flatten threshold, closing the position",
+          "ETH-PERP: long 1 (100.00 USDso) | health 1.100x maintenance | status Healthy",
+          "health 1.100 is below the flatten threshold, closing the position",
+          "guard stopped"
+        ],
+        "exitCode": 0
+      },
+      "stderr": ""
+    },
+    "fault": {
+      "mode": "one-time-rpc-error",
+      "actualProcessExitStatus": 1,
+      "processSignal": null,
+      "trace": {
+        "mode": "one-time-rpc-error",
+        "events": [
+          {
+            "type": "readContract",
+            "name": "getAccountState"
+          },
+          {
+            "type": "readContract",
+            "name": "getWithdrawableCollateral"
+          },
+          {
+            "type": "readContract",
+            "name": "getAccountHealth"
+          },
+          {
+            "type": "injectedRpcError",
+            "name": "getAccountHealth",
+            "message": "RPC timeout at getAccountHealth (once)"
+          },
+          {
+            "type": "readContract",
+            "name": "getMarginStatus"
+          }
+        ],
+        "logs": [
+          "perp-guard | reduce 25% below 1.5x maintenance, flatten below 1.15x | dry-run false",
+          "RPC timeout at getAccountHealth (once)"
+        ],
+        "exitCode": 1
+      },
+      "stderr": ""
+    }
+  },
+  "conclusion": "One recoverable RPC read error causes the original strategy to call process.exit(1) before monitoring the second position; healthy case handles both and shuts down normally.",
+  "limitation": "No on-chain liquidation, transaction or monetary loss was tested."
+}

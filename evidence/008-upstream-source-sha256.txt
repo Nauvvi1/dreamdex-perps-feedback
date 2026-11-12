@@ -1,0 +1,5 @@
+d7ea33c1f248d6f4e865fe6bf417593c2410979e710a3387263d6ffc323a9ce3  fixtures/BOT-KIT-LICENSE
+2319aed531f8f75475fc1a5ee5a3933b256afb1fa7eb917dfafec8916896c07d  fixtures/SDK-LICENSE
+041cfbb5a34bc80c6ddb2d71d81b592c979826a950d617aebdbb2533ea58d23a  fixtures/perp-core-margin.ts
+5a7712eb30e5baaa8a4657301d121055ecff804e967c7f189637df309ef5e21a  fixtures/perp-guard-index.ts
+46c7289705c534a2da8b969a82211d6792026b0b2a2d08cd8bf52a5d560273b2  fixtures/sdk-perp-margin-0.32.1.ts

@@ -1,0 +1,8 @@
+QA-008 — independent local reproduction
+Node: v22.16.0; TypeScript: 5.8.3
+Source SHA-256 checks: PASS
+CONTROL: real process exit 0; closePosition: BTC-PERP, ETH-PERP; shutdown: 1
+FAULT:   real process exit 1; one-time health RPC error: 1; closePosition: 0; shutdown: 0
+Health read counts: healthy=2; fault=1
+PASS: all assertions satisfied
+LIMITATION: controlled mocked RPC, not a live testnet transaction or proof of liquidation.
