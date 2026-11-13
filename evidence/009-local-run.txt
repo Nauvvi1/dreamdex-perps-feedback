@@ -1,0 +1,53 @@
+Command: node tests/repro-009.cjs
+Exit code: 0
+
+{
+  "result": "PASS: wrong SDK classification reproduced on same EVM address",
+  "sourceSha256": "36cb47ff60149039b3135c5cb03f4a71a5acfc2613e4596aa7912eaf3552f7cd",
+  "sdkVersion": "0.32.1",
+  "mode": "original TypeScript with mocked readContract (no actual testnet execution)",
+  "inputAddresses": {
+    "eip55": "0x52908400098527886E0F7030069857D2E4169EE7",
+    "lowercase": "0x52908400098527886e0f7030069857d2e4169ee7",
+    "sameAddress": true
+  },
+  "contractState": {
+    "main": "0x52908400098527886E0F7030069857D2E4169EE7",
+    "members": [
+      "0x52908400098527886E0F7030069857D2E4169EE7",
+      "0xde709f2102306220921060314715629080e2fb77"
+    ],
+    "registry": "0x1111111111111111111111111111111111111111",
+    "quoteFundingPayer": "0x0000000000000000000000000000000000000000"
+  },
+  "getPerpWalletLinkage": {
+    "checksum": {
+      "isMain": true,
+      "isChild": false
+    },
+    "lowercase": {
+      "isMain": false,
+      "isChild": true
+    }
+  },
+  "quotePerpFundingPayer": {
+    "checksum": {
+      "funded": false,
+      "reason": "isMain"
+    },
+    "lowercase": {
+      "funded": false,
+      "reason": "unlinked"
+    }
+  },
+  "rpcCalls": [
+    "linkageOf",
+    "linkageOf",
+    "getLinkedWalletRegistry",
+    "quoteFundingPayer",
+    "mainOf",
+    "getLinkedWalletRegistry",
+    "quoteFundingPayer",
+    "mainOf"
+  ]
+}
